@@ -39,12 +39,10 @@ class Graph:
     def get_cities(self,from_city = None):
         cities = list(self.vertices)
         final_cities = []
-        for i in cities:
-            if from_city != None and i != from_city:
-                if self.path_exists(from_city,i):
-                    final_cities.append(self.vertices[i])
-            elif from_city == None:
-                final_cities.append(self.vertices[i])
+        if from_city != None:
+            final_cities = [self.vertices[i] for i in cities if i != from_city and self.path_exists(from_city,i)]
+        else:
+            final_cities = [self.vertices[i] for i in cities]
         return final_cities
 
 
@@ -82,12 +80,14 @@ for i in cities:
 
 from_city = input("\ninsert the city you're travelling from: ")
 from_vertex = flights.find_vertex(from_city)
+
 cities_available = flights.get_cities(from_vertex)
 count = 1
 print("\n--------Cities You Can Travel To--------")
 for i in cities_available:
     print("%s- %s"%(count,i.data))
     count+= 1
+
 to_city = input("\ninsert the city you're travelling to: ")
 to_vertex = flights.find_vertex(to_city)
 if to_vertex in cities_available:
